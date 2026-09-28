@@ -1,0 +1,28 @@
+name: G1 RSS snapshot
+
+on:
+  push:
+    branches: [arena/01a0e805-g1]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    if: github.ref == 'refs/heads/arena/01a0e805-g1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scrape RSS feeds
+        run: python3 scrape_g1_rss.py --output g1_articles.jsonl
+      - name: Commit the snapshot to this branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add g1_articles.jsonl
+          if ! git diff --cached --quiet; then
+            git commit -m "Update G1 RSS JSONL snapshot"
+            git push origin HEAD:arena/01a0e805-g1
+          fi
