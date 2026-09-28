@@ -1,0 +1,25 @@
+name: G1 RSS snapshot
+
+on:
+  push:
+    branches: [arena/01a0e805-g1]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scrape RSS feeds
+        run: python3 scrape_g1_rss.py --output g1_articles.jsonl
+      - name: Upload snapshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: g1-articles
+          path: g1_articles.jsonl
+          if-no-files-found: warn
