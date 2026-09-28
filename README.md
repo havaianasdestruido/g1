@@ -11,4 +11,4 @@ Each JSONL line is one RSS item with `title`, `link`, `guid`, `description` (RSS
 
 Feed failures are printed to stderr. If *some* feeds fail, the script writes the successful results, labels the output partial, and exits with code 2. If the directory cannot be downloaded or *all* feeds fail, it exits with code 1 without replacing any existing output. A complete run exits with code 0. It uses four concurrent requests by default, short retry backoffs and a 20-second per-request timeout; see `--help` to adjust them. `--page-file` accepts a locally saved directory HTML page for offline testing, but the feeds still require network access.
 
-The GitHub Actions workflow can run the scraper from outside the sandbox and upload a JSONL artifact. RSS entries change as news is published, so rerunning the script will produce a different snapshot.
+The GitHub Actions workflow runs the scraper from a GitHub runner and commits a successful JSONL snapshot back to this branch. RSS entries change as news is published, so rerunning the script will produce a different snapshot.
