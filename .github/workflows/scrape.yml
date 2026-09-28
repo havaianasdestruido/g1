@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   scrape:
+    if: github.ref == 'refs/heads/arena/01a0e805-g1'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
